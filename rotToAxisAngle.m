@@ -8,7 +8,4 @@ function [w, theta] = rotToAxisAngle(rot)
     s_theta = sin(theta);
     w = (1/(2*s_theta))*axisCalc';
     
-    %remove after debugging
-    disp(w, theta)
-
 end
