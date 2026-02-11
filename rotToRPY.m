@@ -5,7 +5,7 @@ function [alpha, beta, gamma] = rotToRPY(rot)
     % Check for singularity at theta = pi/2, -pi/2
     tr = trace(rot);
     theta = acos((tr-1)/2);
-    if theta == (pi/2) || (-pi/2)
+    if theta == (pi/2) || theta == (-pi/2)
         sprintf('ERROR: Singularity Reached (theta = %d)', theta)
         return
     end
