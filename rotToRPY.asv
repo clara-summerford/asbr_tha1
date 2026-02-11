@@ -1,0 +1,39 @@
+%% THA1 - rotation matrix to ZYX (Roll-Pitch-Yaw) angles
+
+function [alpha, beta, gamma] = rotToRPY(rot)
+    
+    % Check for singularity at beta = pi/2, -pi/2
+    tr = trace(rot);
+    theta = acos((tr-1)/2);
+    if theta == (pi/2) || theta == (-pi/2)
+        sprintf('ERROR: Singularity Reached (theta = %d)', theta)
+        return
+    end
+
+    % simplified version, I think this will always return something in (-pi/2, pi/2 range)
+    beta_check = asin(rot(3,1)); 
+
+    % maybe check these values first and see what they return?
+    beta_right = atan2(-rot(3,1), sqrt(rot(3,2)^2+rot(3,3)^2));
+    beta_left = atan2(-rot(3,1), -sqrt(rot(3,2)^2+rot(3,3)^2));
+
+    % Check for singularity (beta = pi/2, -pi/2)
+    if beta == (pi/2) || beta == (-pi/2)
+        sprintf('ERROR: Singularity Reached (theta = %d)', theta)
+        return
+    end
+
+    % beta is in (-pi/2, pi/2) range 
+    if beta_check > -pi/2 && beta_check < pi/2
+        beta = atan2(-rot(3,1), sqrt(rot(3,2)^2+rot(3,3)^2));
+        alpha = atan2(rot(2,1)/s_beta, rot(1,1)/s_beta);
+        gamma = atan2(rot(3,2)/s_beta, rot(3,3)/s_beta);
+
+    % beta is in (pi/2, 3*pi/2) range    
+    elseif beta_check > pi/2 && beta_check < 3*pi/2
+        beta = atan2(-rot(3,1), -sqrt(rot(3,2)^2+rot(3,3)^2));
+        alpha = atan2(-rot(2,3)/s_beta, -rot(1,3)/s_beta);
+        gamma = atan2(-rot(3,2)/s_beta, -rot(3,3)/s_beta);
+    end
+
+end

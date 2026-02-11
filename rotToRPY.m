@@ -2,20 +2,18 @@
 
 function [alpha, beta, gamma] = rotToRPY(rot)
     
-    % Check for singularity at theta = pi/2, -pi/2
-    tr = trace(rot);
-    theta = acos((tr-1)/2);
-    if theta == (pi/2) || theta == (-pi/2)
-        sprintf('ERROR: Singularity Reached (theta = %d)', theta)
-        return
-    end
-
     % simplified version, I think this will always return something in (-pi/2, pi/2 range)
     beta_check = asin(rot(3,1)); 
 
     % maybe check these values first and see what they return?
     beta_right = atan2(-rot(3,1), sqrt(rot(3,2)^2+rot(3,3)^2));
     beta_left = atan2(-rot(3,1), -sqrt(rot(3,2)^2+rot(3,3)^2));
+
+    % Check for singularity (beta = pi/2, -pi/2)
+    if beta == (pi/2) || beta == (-pi/2)
+        sprintf('ERROR: Singularity Reached (beta = %d)', beta)
+        return
+    end
 
     % beta is in (-pi/2, pi/2) range 
     if beta_check > -pi/2 && beta_check < pi/2
