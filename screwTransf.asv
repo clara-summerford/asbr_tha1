@@ -24,7 +24,7 @@
 % Plotting func?
 
 
-function (T1,S1) = screwTransf(T,q,s,h,theta)
+function [T1,S1] = screwTransf(T,q,s,h,theta)
 
 w = s; % Angular velocity of screw vector. Taking theta_dot = 1 rad/s, 
 % the angular velocity is a unit vector in the direction of the
@@ -64,11 +64,11 @@ star_3q = (eye(3)*theta_3q + (1-cos(theta_3q))*w_hat + (theta_3q-sin(theta_3q))*
 S_exp_3q = [rod_3q star_3q; 0 0 0 1] % Exponential coordinates for screw transformation
 T1_3q = S_exp_3q*T;
 
-%% Plot
+%%% Plot
 zf(1) = figure(1);
 za(1) = axes;
 
-%% Space Frame
+%%% Space Frame
 % Location of arrow tails (origin) and arrow heads - homogenous representation
 O_s = [0 0 0 1];
 x_s = [1 0 0 1];
@@ -89,7 +89,7 @@ za(1).XLabel.String = 'X';
 za(1).YLabel.String = 'Y';
 za(1).ZLabel.String = 'Z';
 
-%% T
+%%% T
 % Location of arrow tails (origin) and arrow heads - homogenous representation
 O_T = T(1:4,4); % Origin of T1 in space frame
 x_T = T*x_s'; % Location of x_hat arrowhead defined in body frame (must adjust below to get space frame)
@@ -99,7 +99,7 @@ zp(4) = quiver3(O_T(1),O_T(2),O_T(3),(x_T(1)-O_T(1)),(x_T(2)-O_T(2)),(x_T(3)-O_T
 zp(5) = quiver3(O_T(1),O_T(2),O_T(3),(y_T(1)-O_T(1)),(y_T(2)-O_T(2)),(y_T(3)-O_T(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
 zp(6) = quiver3(O_T(1),O_T(2),O_T(3),(z_T(1)-O_T(1)),(z_T(2)-O_T(2)),(z_T(3)-O_T(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
 
-%% T1
+%%% T1
 % Location of arrow tails (origin) and arrow heads - homogenous representation
 O_T1 = T1(1:4,4); % Origin of T1 in space frame
 % Adjust homogenous representation of arrow heads to be points, not vectors
@@ -115,7 +115,7 @@ zp(7) = quiver3(O_T1(1),O_T1(2),O_T1(3),(x_T1(1)-O_T1(1)),(x_T1(2)-O_T1(2)),(x_T
 zp(8) = quiver3(O_T1(1),O_T1(2),O_T1(3),(y_T1(1)-O_T1(1)),(y_T1(2)-O_T1(2)),(y_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
 zp(9) = quiver3(O_T1(1),O_T1(2),O_T1(3),(z_T1(1)-O_T1(1)),(z_T1(2)-O_T1(2)),(z_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
 
-%% T1_q
+%%% T1_q
 % Location of arrow tails (origin) and arrow heads - homogenous representation
 O_T1_q = T1_q(1:4,4); % Origin of T1 in space frame
 % Adjust homogenous representation of arrow heads to be points, not vectors
@@ -131,23 +131,23 @@ zp(10) = quiver3(O_T1_q(1),O_T1_q(2),O_T1_q(3),(x_T1_q(1)-O_T1_q(1)),(x_T1_q(2)-
 zp(11) = quiver3(O_T1_q(1),O_T1_q(2),O_T1_q(3),(y_T1_q(1)-O_T1_q(1)),(y_T1_q(2)-O_T1_q(2)),(y_T1_q(3)-O_T1_q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
 zp(12) = quiver3(O_T1_q(1),O_T1_q(2),O_T1_q(3),(z_T1_q(1)-O_T1_q(1)),(z_T1_q(2)-O_T1_q(2)),(z_T1_q(3)-O_T1_q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
 
-%% T1_h
+%%% T1_h
 % Location of arrow tails (origin) and arrow heads - homogenous representation
-O_T1 = T1(1:4,4); % Origin of T1 in space frame
+O_T1_h = T1_h(1:4,4); % Origin of T1 in space frame
 % Adjust homogenous representation of arrow heads to be points, not vectors
 x_T(4) = 1;
 y_T(4) = 1;
 z_T(4) = 1;
 
-x_T1 = S_exp*x_T;
-y_T1 = S_exp*y_T;
-z_T1 = S_exp*z_T;
+x_T1_h = S_exp_h*x_T;
+y_T1_h = S_exp_h*y_T;
+z_T1_h = S_exp_h*z_T;
 % Plot
-zp(7) = quiver3(O_T1(1),O_T1(2),O_T1(3),(x_T1(1)-O_T1(1)),(x_T1(2)-O_T1(2)),(x_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-zp(8) = quiver3(O_T1(1),O_T1(2),O_T1(3),(y_T1(1)-O_T1(1)),(y_T1(2)-O_T1(2)),(y_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(9) = quiver3(O_T1(1),O_T1(2),O_T1(3),(z_T1(1)-O_T1(1)),(z_T1(2)-O_T1(2)),(z_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
+zp(13) = quiver3(O_T1_h(1),O_T1_h(2),O_T1_h(3),(x_T1_h(1)-O_T1_h(1)),(x_T1_h(2)-O_T1_h(2)),(x_T1_h(3)-O_T1_h(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
+zp(14) = quiver3(O_T1_h(1),O_T1_h(2),O_T1_h(3),(y_T1_h(1)-O_T1_h(1)),(y_T1_h(2)-O_T1_h(2)),(y_T1_h(3)-O_T1_h(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
+zp(15) = quiver3(O_T1_h(1),O_T1_h(2),O_T1_h(3),(z_T1_h(1)-O_T1_h(1)),(z_T1_h(2)-O_T1_h(2)),(z_T1_h(3)-O_T1_h(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
 
-%% T1_3q
+%%% T1_3q
 % Location of arrow tails (origin) and arrow heads - homogenous representation
 O_T1_3q = T1_3q(1:4,4); % Origin of T1 in space frame
 % Adjust homogenous representation of arrow heads to be points, not vectors
@@ -159,18 +159,14 @@ x_T1_3q = S_exp_3q*x_T;
 y_T1_3q = S_exp_3q*y_T;
 z_T1_3q = S_exp_3q*z_T;
 % Plot
-zp(7) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(x_T1_3q(1)-O_T1_3q(1)),(x_T1_3q(2)-O_T1_3q(2)),(x_T1_3q(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-zp(8) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(y_T1_3q(1)-O_T1_3q(1)),(y_T1_3q(2)-O_T1_3q(2)),(y_T1_3q(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(9) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(z_T1_3q(1)-O_T1_3q(1)),(z_T1_3q(2)-O_T1_3q(2)),(z_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
+zp(16) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(x_T1_3q(1)-O_T1_3q(1)),(x_T1_3q(2)-O_T1_3q(2)),(x_T1_3q(3)-O_T1_3q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
+zp(17) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(y_T1_3q(1)-O_T1_3q(1)),(y_T1_3q(2)-O_T1_3q(2)),(y_T1_3q(3)-O_T1_3q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
+zp(18) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(z_T1_3q(1)-O_T1_3q(1)),(z_T1_3q(2)-O_T1_3q(2)),(z_T1_3q(3)-O_T1_3q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
 
 
 
-
-
-
-
-%% Calculate Screw Axis returning T1 to fix-frame origin
-T_orig = [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];
+%%% Calculate Screw Axis returning T1 to fix-frame origin
+T_orig = eye(4);
 
 % Calculate screw tranformation from T1 to origin
 S1_exp = T_orig*inv(T1);
@@ -178,15 +174,18 @@ S1_exp = T_orig*inv(T1);
 % Extract rotation matrix and origin vector from S1_exp, compute omega and theta
 R1 = S1_exp(1:3,1:3);
 p = S1_exp(1:3,4);
-
 [w1,theta1] = rotToAxisAngle(R1) % Check negative!
+w1_hat = [0 -w1(3) w1(2); w1(3) 0 -w1(1); -w1(2) w1(1) 0]; % Use Clara's function
 
-w1_hat = [0 -w1(3) w1(2); w1(3) 0 -w1(1); -w1(2) w1(1) 0],
-
+% Calculate linear velocity vector (
 v1 = ((1/theta1)*eye(3) - (1/2)*w1_hat + ((1/theta1)-.5*cot(theta1/2))*w1_hat^2)*p;
 
+% Calculate Screw Axis S1
 S1_mat = [w1_hat v1; zeros(1,4)]
 S1 = [w1;v1]
+
+% Plot Screw axis
+
 
 end
 
