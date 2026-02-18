@@ -1,4 +1,9 @@
-%% THA1 - rotation matrix to axis-angle representation
+%% ME384R - ASBR - THA1
+% Written by Clara Summerford and Nathan Lovell
+%
+% This function takes a user-defined rotation matrix (rot) and returns the axis
+% of rotation (w) and the angle (theta) about which the frame is rotated about that
+% axis.
 
 function [w, theta] = rotToAxisAngle(rot)
 
