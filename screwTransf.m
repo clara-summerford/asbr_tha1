@@ -180,8 +180,12 @@ w1_hat = [0 -w1(3) w1(2); w1(3) 0 -w1(1); -w1(2) w1(1) 0]; % Use Clara's functio
 % Calculate linear velocity vector (
 v1 = ((1/theta1)*eye(3) - (1/2)*w1_hat + ((1/theta1)-.5*cot(theta1/2))*w1_hat^2)*p;
 
+% Calculate Screw Axis S1
 S1_mat = [w1_hat v1; zeros(1,4)]
 S1 = [w1;v1]
+
+% Plot Screw axis
+
 
 end
 
