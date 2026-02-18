@@ -133,19 +133,19 @@ zp(12) = quiver3(O_T1_q(1),O_T1_q(2),O_T1_q(3),(z_T1_q(1)-O_T1_q(1)),(z_T1_q(2)-
 
 %% T1_h
 % Location of arrow tails (origin) and arrow heads - homogenous representation
-O_T1_h = T1_h(1:4,4); % Origin of T1 in space frame
+O_T1 = T1(1:4,4); % Origin of T1 in space frame
 % Adjust homogenous representation of arrow heads to be points, not vectors
 x_T(4) = 1;
 y_T(4) = 1;
 z_T(4) = 1;
 
-x_T1_h = S_exp_h*x_T;
-y_T1_h = S_exp_h*y_T;
-z_T1_h = S_exp_h*z_T;
+x_T1 = S_exp*x_T;
+y_T1 = S_exp*y_T;
+z_T1 = S_exp*z_T;
 % Plot
-zp(13) = quiver3(O_T1_h(1),O_T1_h(2),O_T1_h(3),(x_T1_h(1)-O_T1_h(1)),(x_T1_h(2)-O_T1_h(2)),(x_T1_h(3)-O_T1_h(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-zp(14) = quiver3(O_T1_h(1),O_T1_h(2),O_T1_h(3),(y_T1_h(1)-O_T1_h(1)),(y_T1_h(2)-O_T1_h(2)),(y_T1_h(3)-O_T1_h(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(15) = quiver3(O_T1_h(1),O_T1_h(2),O_T1_h(3),(z_T1_h(1)-O_T1_h(1)),(z_T1_h(2)-O_T1_h(2)),(z_T1_h(3)-O_T1_h(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
+zp(7) = quiver3(O_T1(1),O_T1(2),O_T1(3),(x_T1(1)-O_T1(1)),(x_T1(2)-O_T1(2)),(x_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
+zp(8) = quiver3(O_T1(1),O_T1(2),O_T1(3),(y_T1(1)-O_T1(1)),(y_T1(2)-O_T1(2)),(y_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
+zp(9) = quiver3(O_T1(1),O_T1(2),O_T1(3),(z_T1(1)-O_T1(1)),(z_T1(2)-O_T1(2)),(z_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
 
 %% T1_3q
 % Location of arrow tails (origin) and arrow heads - homogenous representation
@@ -159,9 +159,9 @@ x_T1_3q = S_exp_3q*x_T;
 y_T1_3q = S_exp_3q*y_T;
 z_T1_3q = S_exp_3q*z_T;
 % Plot
-zp(16) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(x_T1_3q(1)-O_T1_3q(1)),(x_T1_3q(2)-O_T1_3q(2)),(x_T1_3q(3)-O_T1_3q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-zp(17) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(y_T1_3q(1)-O_T1_3q(1)),(y_T1_3q(2)-O_T1_3q(2)),(y_T1_3q(3)-O_T1_3q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(18) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(z_T1_3q(1)-O_T1_3q(1)),(z_T1_3q(2)-O_T1_3q(2)),(z_T1_3q(3)-O_T1_3q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
+zp(7) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(x_T1_3q(1)-O_T1_3q(1)),(x_T1_3q(2)-O_T1_3q(2)),(x_T1_3q(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
+zp(8) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(y_T1_3q(1)-O_T1_3q(1)),(y_T1_3q(2)-O_T1_3q(2)),(y_T1_3q(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
+zp(9) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(z_T1_3q(1)-O_T1_3q(1)),(z_T1_3q(2)-O_T1_3q(2)),(z_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
 
 
 
