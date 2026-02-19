@@ -4,7 +4,13 @@
 
 function [Q] = rotToQuat(rot)
 
-    
+    % Check if the input is a valid rotation matrix
+    check = isValidRot(rot);
+    if check == 0
+        disp('ERROR: Not a valid rotation matrix')
+        return
+    end
+
     if ~isequal(size(rot), [3,3])
         error('Error: input is not a 3x3 rotation matrix!')
     end

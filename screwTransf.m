@@ -18,11 +18,10 @@
 % and distance theta (in the fixed frame)
 % S1 = 6x1 Screw axis that describes the transformation of frame T1 back
 % to the origin of the fixed frame
-
-
-% Make a skew sym func!!!!!!!!!!!!!!!!!!!
-% Plotting func?
-
+%
+% NOTE: User must manually adjust X,Y, and Z limits to the desired ranges
+% for the plots. User will also need to uncomment the "print" lines in
+% order to export the plots to png files.
 
 function [T1,S1] = screwTransf(T,q,s,h,theta)
 
@@ -32,11 +31,12 @@ w = s; % Angular velocity of screw vector. Taking theta_dot = 1 rad/s,
 w_hat = vec2SkewSym(w),
 v = [cross(-s,q) + h*s]'; % Linear velocity of screw vector
 
-%S = [omega;v]; % Screw axis 
-%S_mat = [omega_hat v; zeros(1,4)]; % Screw axis (matrix form)
+% Calculate Screw Axis S
+S = [w';v];
+S_mat = [w_hat v; zeros(1,4)]; % Matrix representation of S1
 
 % Calculate the screw matrix exponential
-S_exp = calcScrewMatExp(w,v,theta)
+S_exp = calcScrewMatExp(w,v,theta);
 
 % Return T1
 T1 = S_exp*T;
@@ -44,24 +44,23 @@ T1 = S_exp*T;
 % Compute the frames associated with a distance of 1/4, 1/2, and 3/4 of
 % theta
 theta_q = theta/4; % Quarter of theta
-S_exp_q = calcScrewMatExp(w,v,theta_q)
+S_exp_q = calcScrewMatExp(w,v,theta_q);
 T1_q = S_exp_q*T;
 
 theta_h = theta/2; % Half of theta
-S_exp_h = calcScrewMatExp(w,v,theta_h)
+S_exp_h = calcScrewMatExp(w,v,theta_h);
 T1_h = S_exp_h*T;
 
 theta_3q = 3*theta/4; % Three-quarters of theta
-S_exp_3q = calcScrewMatExp(w,v,theta_3q)
+S_exp_3q = calcScrewMatExp(w,v,theta_3q);
 T1_3q = S_exp_3q*T;
 
 %%% Plot frames
-figure
 plotTransf(eye(4))
 hold on
-xlim([-8,8])
-ylim([-8,8])
-zlim([-8,8])
+xlim([-6,8])
+ylim([-4,8])
+zlim([-6,8])
 xlabel('X')
 ylabel('Y')
 zlabel('Z')
@@ -71,106 +70,14 @@ plotTransf(T,S_exp_q)
 plotTransf(T,S_exp_h)
 plotTransf(T,S_exp_3q)
 
+zf(1) = figure(1);
 
-%%% Plot
-zf(1) = figure;
-za(1) = axes;
-
-%%% Space Frame
-% Location of arrow tails (origin) and arrow heads - homogenous representation
-O_s = [0 0 0 1];
-x_s = [1 0 0 1];
-y_s = [0 1 0 1];
-z_s = [0 0 1 1];
-% Plot
-zp(1) = quiver3(O_s(1),O_s(2),O_s(3),x_s(1),x_s(2),x_s(3),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-hold on
-grid on
-box on
-zp(2) = quiver3(O_s(1),O_s(2),O_s(3),y_s(1),y_s(2),y_s(3),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(3) = quiver3(O_s(1),O_s(2),O_s(3),z_s(1),z_s(2),z_s(3),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
-
-za(1).XLim = [-8,8];
-za(1).YLim = [-8,8];
-za(1).ZLim = [-8,8];
-za(1).XLabel.String = 'X';
-za(1).YLabel.String = 'Y';
-za(1).ZLabel.String = 'Z';
-
-%%% T
-% Location of arrow tails (origin) and arrow heads - homogenous representation
-O_T = T(1:4,4); % Origin of T1 in space frame
-x_T = T*x_s'; % Location of x_hat arrowhead defined in body frame (must adjust below to get space frame)
-y_T = T*y_s'; % Location of y_hat arrowhead defined in body frame (must adjust below to get space frame)
-z_T = T*z_s'; % Location of z_hat arrowhead defined in body frame (must adjust below to get space frame)
-zp(4) = quiver3(O_T(1),O_T(2),O_T(3),(x_T(1)-O_T(1)),(x_T(2)-O_T(2)),(x_T(3)-O_T(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-zp(5) = quiver3(O_T(1),O_T(2),O_T(3),(y_T(1)-O_T(1)),(y_T(2)-O_T(2)),(y_T(3)-O_T(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(6) = quiver3(O_T(1),O_T(2),O_T(3),(z_T(1)-O_T(1)),(z_T(2)-O_T(2)),(z_T(3)-O_T(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
-
-%%% T1
-% Location of arrow tails (origin) and arrow heads - homogenous representation
-O_T1 = T1(1:4,4); % Origin of T1 in space frame
-% Adjust homogenous representation of arrow heads to be points, not vectors
-x_T(4) = 1;
-y_T(4) = 1;
-z_T(4) = 1;
-
-x_T1 = S_exp*x_T;
-y_T1 = S_exp*y_T;
-z_T1 = S_exp*z_T;
-% Plot
-zp(7) = quiver3(O_T1(1),O_T1(2),O_T1(3),(x_T1(1)-O_T1(1)),(x_T1(2)-O_T1(2)),(x_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-zp(8) = quiver3(O_T1(1),O_T1(2),O_T1(3),(y_T1(1)-O_T1(1)),(y_T1(2)-O_T1(2)),(y_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(9) = quiver3(O_T1(1),O_T1(2),O_T1(3),(z_T1(1)-O_T1(1)),(z_T1(2)-O_T1(2)),(z_T1(3)-O_T1(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
-
-%%% T1_q
-% Location of arrow tails (origin) and arrow heads - homogenous representation
-O_T1_q = T1_q(1:4,4); % Origin of T1 in space frame
-% Adjust homogenous representation of arrow heads to be points, not vectors
-x_T(4) = 1;
-y_T(4) = 1;
-z_T(4) = 1;
-
-x_T1_q = S_exp_q*x_T;
-y_T1_q = S_exp_q*y_T;
-z_T1_q = S_exp_q*z_T;
-% Plot
-zp(10) = quiver3(O_T1_q(1),O_T1_q(2),O_T1_q(3),(x_T1_q(1)-O_T1_q(1)),(x_T1_q(2)-O_T1_q(2)),(x_T1_q(3)-O_T1_q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-zp(11) = quiver3(O_T1_q(1),O_T1_q(2),O_T1_q(3),(y_T1_q(1)-O_T1_q(1)),(y_T1_q(2)-O_T1_q(2)),(y_T1_q(3)-O_T1_q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(12) = quiver3(O_T1_q(1),O_T1_q(2),O_T1_q(3),(z_T1_q(1)-O_T1_q(1)),(z_T1_q(2)-O_T1_q(2)),(z_T1_q(3)-O_T1_q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
-
-%%% T1_h
-% Location of arrow tails (origin) and arrow heads - homogenous representation
-O_T1_h = T1_h(1:4,4); % Origin of T1 in space frame
-% Adjust homogenous representation of arrow heads to be points, not vectors
-x_T(4) = 1;
-y_T(4) = 1;
-z_T(4) = 1;
-
-x_T1_h = S_exp_h*x_T;
-y_T1_h = S_exp_h*y_T;
-z_T1_h = S_exp_h*z_T;
-% Plot
-zp(13) = quiver3(O_T1_h(1),O_T1_h(2),O_T1_h(3),(x_T1_h(1)-O_T1_h(1)),(x_T1_h(2)-O_T1_h(2)),(x_T1_h(3)-O_T1_h(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-zp(14) = quiver3(O_T1_h(1),O_T1_h(2),O_T1_h(3),(y_T1_h(1)-O_T1_h(1)),(y_T1_h(2)-O_T1_h(2)),(y_T1_h(3)-O_T1_h(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(15) = quiver3(O_T1_h(1),O_T1_h(2),O_T1_h(3),(z_T1_h(1)-O_T1_h(1)),(z_T1_h(2)-O_T1_h(2)),(z_T1_h(3)-O_T1_h(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
-
-%%% T1_3q
-% Location of arrow tails (origin) and arrow heads - homogenous representation
-O_T1_3q = T1_3q(1:4,4); % Origin of T1 in space frame
-% Adjust homogenous representation of arrow heads to be points, not vectors
-x_T(4) = 1;
-y_T(4) = 1;
-z_T(4) = 1;
-
-x_T1_3q = S_exp_3q*x_T;
-y_T1_3q = S_exp_3q*y_T;
-z_T1_3q = S_exp_3q*z_T;
-% Plot
-zp(16) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(x_T1_3q(1)-O_T1_3q(1)),(x_T1_3q(2)-O_T1_3q(2)),(x_T1_3q(3)-O_T1_3q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-zp(17) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(y_T1_3q(1)-O_T1_3q(1)),(y_T1_3q(2)-O_T1_3q(2)),(y_T1_3q(3)-O_T1_3q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-zp(18) = quiver3(O_T1_3q(1),O_T1_3q(2),O_T1_3q(3),(z_T1_3q(1)-O_T1_3q(1)),(z_T1_3q(2)-O_T1_3q(2)),(z_T1_3q(3)-O_T1_3q(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
-
+% Export plot as a png
+fig_size = [5 4];
+zf(1).PaperPosition = [0 0 fig_size];
+zf(1).PaperSize = fig_size;
+ss = ['THA1 PA3 Plot 1']; % File Name
+%print(zf(1),'-dpng','-r300','-vector',ss) % Uncomment to save figure
 
 
 %%% Calculate Screw Axis returning T1 to fix-frame origin
@@ -189,24 +96,31 @@ w1_hat = vec2SkewSym(w1);
 v1 = ((1/theta1)*eye(3) - (1/2)*w1_hat + ((1/theta1)-.5*cot(theta1/2))*w1_hat^2)*p;
 
 % Calculate Screw Axis S1
-S1_mat = [w1_hat v1; zeros(1,4)]
 S1 = [w1;v1]
+% S1_mat = [w1_hat v1; zeros(1,4)] % Matrix representation of S1
 
 
-t_range = 0:0.01:theta;
+%%% Plot 
+t_range = 0:0.01:theta1;
 S1_path = zeros(length(t_range),3);
 
 for n = 1:length(t_range)
-    rod_int = eye(3) + sin(t_range(n))*w1_hat + (1-cos(t_range(n)))*w1_hat^2; % Rodriguez' formula
-    star_int = (eye(3)*t_range(n) + (1-cos(t_range(n)))*w1_hat + (t_range(n)-sin(t_range(n)))*w1_hat^2)*v1;
-    S_exp_int = [rod_int star_int; 0 0 0 1] % Intermediate screw exponential matrix
-
-    T_int = S_exp_int*T1; % Intermediate pose 
+    S1_exp_int = calcScrewMatExp(w1,v1,t_range(n))
+    T_int = S1_exp_int*T1; % Intermediate pose 
     S1_path(n,:) = T_int(1:3,4); % Path of the screw axis S1
 end
 
 % Plot Screw axis
-plot3(S1_path(:,1),S1_path(:,2),S1_path(:,3), 'm')
+path = plot3(S1_path(:,1),S1_path(:,2),S1_path(:,3), 'LineWidth',1,'Color','m','DisplayName','Screw Axis S1')
+legend([path],{'Screw Axis S1'},'Location','northeast')
+
+zf(2) = figure(1)
+
+% Export plot as a png
+fig_size = [5 4];
+zf(2).PaperPosition = [0 0 fig_size];
+zf(2).PaperSize = fig_size;
+ss = ['THA1 PA3 Plot 2']; % File Name
+%print(zf(2),'-dpng','-r300','-vector',ss) % Uncomment to save figure
 
 end
-

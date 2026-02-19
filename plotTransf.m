@@ -1,7 +1,15 @@
 %% ME384R - ASBR - THA1
 % Written by Clara Summerford and Nathan Lovell
 %
-% This function 
+% This function plots a set of Cartesian axes under one of three
+% conditions:
+% (a) if T0 is a 4x4 identity matrix, plots the frame at (0,0,0) e.g. the
+% space frame.
+% (b) if T0 is not eye(4) and is the only input, plots the space frame and 
+% the frame described by T0 in the space frame
+% (c) if both T0 and transf provided, plots the space frame and a new frame 
+% given by subjecting T0 to a fixed-frame rgid body transformation
+% described by transf.
 
 function plotTransf(T0,transf)
 
