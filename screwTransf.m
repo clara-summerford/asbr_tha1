@@ -51,25 +51,29 @@ theta_h = theta/2; % Half of theta
 S_exp_h = calcScrewMatExp(w,v,theta_h)
 T1_h = S_exp_h*T;
 
-
 theta_3q = 3*theta/4; % Three-quarters of theta
 S_exp_3q = calcScrewMatExp(w,v,theta_3q)
 T1_3q = S_exp_3q*T;
 
+%%% Plot frames
 figure
 plotTransf(eye(4))
 hold on
-za(1).XLim = [-8,8];
-za(1).YLim = [-8,8];
-za(1).ZLim = [-8,8];
-za(1).XLabel.String = 'X';
-za(1).YLabel.String = 'Y';
-za(1).ZLabel.String = 'Z';
+xlim([-8,8])
+ylim([-8,8])
+zlim([-8,8])
+xlabel('X')
+ylabel('Y')
+zlabel('Z')
 plotTransf(T)
 plotTransf(T,S_exp)
+plotTransf(T,S_exp_q)
+plotTransf(T,S_exp_h)
+plotTransf(T,S_exp_3q)
+
 
 %%% Plot
-zf(1) = figure(1);
+zf(1) = figure;
 za(1) = axes;
 
 %%% Space Frame

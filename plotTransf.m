@@ -50,14 +50,15 @@ elseif nargin == 2
     y_T = T0*y_s; % Location of y_hat arrowhead defined in body frame (must adjust below to get space frame)
     z_T = T0*z_s; % Location of z_hat arrowhead defined in body frame (must adjust below to get space frame)
     
+    O_Tf = transf*O_T;
     x_Tf = transf*x_T;
     y_Tf = transf*y_T;
     z_Tf = transf*z_T;
 
     % Plot frame T0
-    zp(4) = quiver3(O_T(1),O_T(2),O_T(3),(x_Tf(1)-O_T(1)),(x_Tf(2)-O_T(2)),(x_Tf(3)-O_T(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
-    zp(5) = quiver3(O_T(1),O_T(2),O_T(3),(y_Tf(1)-O_T(1)),(y_Tf(2)-O_T(2)),(y_Tf(3)-O_T(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
-    zp(6) = quiver3(O_T(1),O_T(2),O_T(3),(z_Tf(1)-O_T(1)),(z_Tf(2)-O_T(2)),(z_Tf(3)-O_T(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
+    zp(4) = quiver3(O_Tf(1),O_Tf(2),O_Tf(3),(x_Tf(1)-O_Tf(1)),(x_Tf(2)-O_Tf(2)),(x_Tf(3)-O_Tf(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','r');
+    zp(5) = quiver3(O_Tf(1),O_Tf(2),O_Tf(3),(y_Tf(1)-O_Tf(1)),(y_Tf(2)-O_Tf(2)),(y_Tf(3)-O_Tf(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
+    zp(6) = quiver3(O_Tf(1),O_Tf(2),O_Tf(3),(z_Tf(1)-O_Tf(1)),(z_Tf(2)-O_Tf(2)),(z_Tf(3)-O_Tf(3)),'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
 
 end
 
