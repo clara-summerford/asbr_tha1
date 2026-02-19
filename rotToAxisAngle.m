@@ -23,9 +23,18 @@ function [w, theta] = rotToAxisAngle(rot)
 
     elseif tr == -1
         theta = pi;
-        % first option from lectures 
+
+        % Use whichever expression for w that does not return an NaN vector
         w = (1/sqrt(2*(1+rot(3,3))))*[rot(1,3); rot(2,3); 1 + rot(3,3)]; 
-    
+        
+        if isnan(w(1)) || isnan(w(2)) || isnan(w(3))
+            w = (1/sqrt(2*(1+rot(2,2))))*[rot(1,2); 1+ rot(2,2); rot(3,2)];
+        end
+
+        if isnan(w(1)) || isnan(w(2)) || isnan(w(3))
+            w = (1/sqrt(2*(1+rot(1,1))))*[1+rot(1,1); rot(2,1); rot(3,1)];
+        end
+
     else 
         theta = acos((tr-1)/2);
         w_skew = (1/(2*sin(theta)))*(rot-rot');
