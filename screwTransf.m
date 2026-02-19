@@ -29,40 +29,44 @@ function [T1,S1] = screwTransf(T,q,s,h,theta)
 w = s; % Angular velocity of screw vector. Taking theta_dot = 1 rad/s, 
 % the angular velocity is a unit vector in the direction of the
 % screw axis.
-w_hat = [0 -w(3) w(2); w(3) 0 -w(1); -w(2) w(1) 0],
+w_hat = vec2SkewSym(w),
 v = [cross(-s,q) + h*s]'; % Linear velocity of screw vector
 
-%S = [omega;v];
-%S_mat = [omega_hat v; zeros(1,4)];
+%S = [omega;v]; % Screw axis 
+%S_mat = [omega_hat v; zeros(1,4)]; % Screw axis (matrix form)
 
 % Calculate the screw matrix exponential
-%S_exp2 = expm(S_mat*theta) % Exponential coordinates for screw transformation
-rod = eye(3) + sin(theta)*w_hat + (1-cos(theta))*w_hat^2; % Rodriguez' formula
-star = (eye(3)*theta + (1-cos(theta))*w_hat + (theta-sin(theta))*w_hat^2)*v;
-S_exp = [rod star; 0 0 0 1] % Exponential coordinates for screw transformation
+S_exp = calcScrewMatExp(w,v,theta)
 
 % Return T1
 T1 = S_exp*T;
 
-% Compute the frame associated with a distance of 1/4, 1/2, and 3/4 of
+% Compute the frames associated with a distance of 1/4, 1/2, and 3/4 of
 % theta
 theta_q = theta/4; % Quarter of theta
-rod_q = eye(3) + sin(theta_q)*w_hat + (1-cos(theta_q))*w_hat^2; % Rodriguez' formula
-star_q = (eye(3)*theta_q + (1-cos(theta_q))*w_hat + (theta_q-sin(theta_q))*w_hat^2)*v;
-S_exp_q = [rod_q star_q; 0 0 0 1] % Exponential coordinates for screw transformation
+S_exp_q = calcScrewMatExp(w,v,theta_q)
 T1_q = S_exp_q*T;
 
 theta_h = theta/2; % Half of theta
-rod_h = eye(3) + sin(theta_h)*w_hat + (1-cos(theta_h))*w_hat^2; % Rodriguez' formula
-star_h = (eye(3)*theta_h + (1-cos(theta_h))*w_hat + (theta_h-sin(theta_h))*w_hat^2)*v;
-S_exp_h = [rod_h star_h; 0 0 0 1] % Exponential coordinates for screw transformation
+S_exp_h = calcScrewMatExp(w,v,theta_h)
 T1_h = S_exp_h*T;
 
+
 theta_3q = 3*theta/4; % Three-quarters of theta
-rod_3q = eye(3) + sin(theta_3q)*w_hat + (1-cos(theta_3q))*w_hat^2; % Rodriguez' formula
-star_3q = (eye(3)*theta_3q + (1-cos(theta_3q))*w_hat + (theta_3q-sin(theta_3q))*w_hat^2)*v;
-S_exp_3q = [rod_3q star_3q; 0 0 0 1] % Exponential coordinates for screw transformation
+S_exp_3q = calcScrewMatExp(w,v,theta_3q)
 T1_3q = S_exp_3q*T;
+
+figure
+plotTransf(eye(4))
+hold on
+za(1).XLim = [-8,8];
+za(1).YLim = [-8,8];
+za(1).ZLim = [-8,8];
+za(1).XLabel.String = 'X';
+za(1).YLabel.String = 'Y';
+za(1).ZLabel.String = 'Z';
+plotTransf(T)
+plotTransf(T,S_exp)
 
 %%% Plot
 zf(1) = figure(1);
@@ -175,17 +179,30 @@ S1_exp = T_orig*inv(T1);
 R1 = S1_exp(1:3,1:3);
 p = S1_exp(1:3,4);
 [w1,theta1] = rotToAxisAngle(R1) % Check negative!
-w1_hat = [0 -w1(3) w1(2); w1(3) 0 -w1(1); -w1(2) w1(1) 0]; % Use Clara's function
+w1_hat = vec2SkewSym(w1);
 
-% Calculate linear velocity vector (
+% Calculate linear velocity vector
 v1 = ((1/theta1)*eye(3) - (1/2)*w1_hat + ((1/theta1)-.5*cot(theta1/2))*w1_hat^2)*p;
 
 % Calculate Screw Axis S1
 S1_mat = [w1_hat v1; zeros(1,4)]
 S1 = [w1;v1]
 
-% Plot Screw axis
 
+t_range = 0:0.01:theta;
+S1_path = zeros(length(t_range),3);
+
+for n = 1:length(t_range)
+    rod_int = eye(3) + sin(t_range(n))*w1_hat + (1-cos(t_range(n)))*w1_hat^2; % Rodriguez' formula
+    star_int = (eye(3)*t_range(n) + (1-cos(t_range(n)))*w1_hat + (t_range(n)-sin(t_range(n)))*w1_hat^2)*v1;
+    S_exp_int = [rod_int star_int; 0 0 0 1] % Intermediate screw exponential matrix
+
+    T_int = S_exp_int*T1; % Intermediate pose 
+    S1_path(n,:) = T_int(1:3,4); % Path of the screw axis S1
+end
+
+% Plot Screw axis
+plot3(S1_path(:,1),S1_path(:,2),S1_path(:,3), 'm')
 
 end
 
