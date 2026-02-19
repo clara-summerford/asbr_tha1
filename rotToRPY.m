@@ -1,4 +1,6 @@
-%% THA1 - rotation matrix to ZYX (Roll-Pitch-Yaw) angles
+%% ME384R - ASBR - THA1
+% Written by Clara Summerford and Nathan Lovell
+% Returns a 1x3 array of ZYX (aka RPY) angles from an input 3x3 rotation matrix
 
 function [alpha, beta, gamma] = rotToRPY(rot)
     
