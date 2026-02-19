@@ -13,7 +13,7 @@ function [alpha, beta, gamma] = rotToZYZ(rot)
     end
 
     % Calculate beta
-    beta = atan2(sqrt(rot(1,3)^2 + rot(2,3)^2), rot(3,3));
+    beta = atan2(sqrt(rot(3,1)^2 + rot(3,2)^2), rot(3,3));
 
     % Check for singularity (beta = 0, pi)
     if beta == 0 || beta == pi
@@ -22,7 +22,9 @@ function [alpha, beta, gamma] = rotToZYZ(rot)
     end
 
     % Calculate other ZYZ Euler Angles
-    alpha = atan2(rot(2,3), rot(1,3));
-    gamma = atan2(rot(3,2), -rot(3,1));
+    sb = sin(beta);
+
+    alpha = atan2(rot(2,3)/sb, rot(1,3)/sb);
+    gamma = atan2(rot(3,2)/sb, -rot(3,1)/sb);
     
 end

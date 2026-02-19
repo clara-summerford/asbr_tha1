@@ -19,7 +19,8 @@ function [w, theta] = rotToAxisAngle(rot)
     % checking first if the rotation matrix is an identity matrix 
     if rot == eye(3)
         theta = 0;
-        fprintf("ERROR: Identity rotation matrix, w is undefined!")
+        w = NaN(3,1)
+        fprintf("WARNING: Identity rotation matrix, w is undefined!")
 
     elseif tr == -1
         theta = pi;
