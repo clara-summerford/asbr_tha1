@@ -1,4 +1,6 @@
-%% THA1 - axis angle representation to rotation matrix 
+%% ME384R - ASBR - THA1
+% Written by Clara Summerford and Nathan Lovell
+% Returns a 3x3 rotation matrix based on an input axis (w) and angle (theta)
 
 function rot = axisAngleToRot(w, theta)
 
