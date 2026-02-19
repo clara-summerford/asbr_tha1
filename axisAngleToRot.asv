@@ -1,0 +1,16 @@
+%% ME384R - ASBR - THA1
+% Written by Clara Summerford and Nathan Lovell
+%
+% Returns a 3x3 rotation matrix based on an input axis (3x1 or 1x3 unit 
+% vector w) and angle (theta, in rad)
+
+function rot = axisAngleToRot(w, theta)
+
+    if ~isequal(size(w), [1,3]) && ~isequal(size(w), [3,1]) && norm(w) ~= 1
+        error('ERROR: input is not a valid axis!')
+    end
+
+    w_hat = vec2SkewSym(w);
+    rot = eye(3) + w_hat*sin(theta)+(w_hat^2)*(1-cos(theta)); % Rodriguez' formula
+    
+end

@@ -5,7 +5,7 @@
 function rot = quatToRot(Q)
 
     if ~isequal(size(Q), [1,4]) && ~isequal(size(Q), [4,1])
-        error('Error: input is not a quaternion!')
+        error('ERROR: input is not a quaternion!')
     end
 
     %checking if the input is a unit quaternion and normalizing if it is not
