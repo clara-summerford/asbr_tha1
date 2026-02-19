@@ -1,5 +1,6 @@
 %% ME384R - ASBR - THA1
 % Written by Clara Summerford and Nathan Lovell
+%
 % Returns quaternion as a [1,4] array from an input 3x3 rotation matrix
 
 function [Q] = rotToQuat(rot)
