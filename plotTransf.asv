@@ -9,15 +9,12 @@
 % the frame described by T0 in the space frame
 % (c) if both T0 and transf provided, plots the space frame and a new frame 
 % given by subjecting T0 to a fixed-frame rgid body transformation
-% described by "transf".
+% described by transf.
 %
 % The input "scale" allows the user to scale the size of the coordinate
 % axes based on the workspace size/units used. A good rule of thumb is a
 % tenth of the order of magnitude of the input positions (for example, if
 % frame is at position (1,1,1), scale=0.1 would likely be adequate).
-%
-% The input "lim" allows the user to specify a workspace radius, so that
-% the plotted coordinates can always be visualized clearly.
 
 function plotTransf(T0,scale,lim,transf)
     
@@ -77,7 +74,7 @@ function plotTransf(T0,scale,lim,transf)
         zp(6) = quiver3(O_Tf(1),O_Tf(2),O_Tf(3),(z_Tf(1)-O_Tf(1))*scale,(z_Tf(2)-O_Tf(2))*scale,(z_Tf(3)-O_Tf(3))*scale,'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
     
         % Plot a connecting line between the origins
-        plot3([O_T(1) O_Tf(1)],[O_T(2) O_Tf(2)],[O_T(3) O_Tf(3)],'m')
+        plot3([O_T(1) O_Tf(1)],[O_T(2) O_Tf(1)],[O_T(1) O_Tf(1)])
 
     end
 
