@@ -38,6 +38,9 @@ function plotTransf(T0,scale,lim,transf)
     zp(2) = quiver3(O_s(1),O_s(2),O_s(3),y_s(1)*scale,y_s(2)*scale,y_s(3)*scale,'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
     zp(3) = quiver3(O_s(1),O_s(2),O_s(3),z_s(1)*scale,z_s(2)*scale,z_s(3)*scale,'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
     lgd = legend('X', 'Y', 'Z');
+    xlabel('X');
+    ylabel('Y');
+    zlabel('Z');
     lgd.AutoUpdate = 'off';
     
     % If T0 = 4x4 identity matrix, return
@@ -76,9 +79,9 @@ function plotTransf(T0,scale,lim,transf)
         zp(5) = quiver3(O_Tf(1),O_Tf(2),O_Tf(3),(y_Tf(1)-O_Tf(1))*scale,(y_Tf(2)-O_Tf(2))*scale,(y_Tf(3)-O_Tf(3))*scale,'LineWidth',1.5,'MaxHeadSize',2,'Color','g');
         zp(6) = quiver3(O_Tf(1),O_Tf(2),O_Tf(3),(z_Tf(1)-O_Tf(1))*scale,(z_Tf(2)-O_Tf(2))*scale,(z_Tf(3)-O_Tf(3))*scale,'LineWidth',1.5,'MaxHeadSize',2,'Color','b');
     
-        % Plot a connecting line between the origins
-        plot3([O_T(1) O_Tf(1)],[O_T(2) O_Tf(2)],[O_T(3) O_Tf(3)],'m')
-
+        % % Plot a connecting line between the origins
+        %plot3([O_T(1) O_Tf(1)],[O_T(2) O_Tf(2)],[O_T(3) O_Tf(3)],'m')
+        
     end
 
 
