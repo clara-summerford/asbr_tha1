@@ -24,7 +24,7 @@ function test = isValidRot(rot)
     
     if ((abs(d - 1)) < tol) && (all(abs(orth - eye(3)) < tol,'all'))
         test = true;
-        disp('Test PASSED')
+        %disp('Test PASSED')
     else
         test = false;
     end
